@@ -15,7 +15,7 @@ st.set_page_config(page_title="EDUCATION DEGREE AND MAJOR PREDICTION", page_icon
 
 def main():
     
-    url = "https://raw.githubusercontent.com/rafsunsheikh/alumni_employability/master/datasets/alumni_dataset.csv"
+    url = "https://raw.githubusercontent.com/rafsunsheikh/alumni_employability/master/datasets/alumni_dataset_business.csv"
     df = pd.read_csv(url)
 
     # Filter rows where 'Education Subject' column is 'Business'
