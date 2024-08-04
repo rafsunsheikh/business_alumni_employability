@@ -16,43 +16,18 @@ st.set_page_config(page_title="RECOMMENDED JOBS PREDICTION", page_icon="📈", l
 
 def main():
     
-    url = "https://raw.githubusercontent.com/rafsunsheikh/alumni_employability/master/datasets/alumni_dataset_business.csv"
-    df = pd.read_csv(url, index_col=0)
-
-    # Filter rows where 'Education Subject' column is 'Business'
-    df = df[df['Education Subject'] == 'Business']
+    df = pd.read_csv('../datasets/business_dataset.csv')
 
     st.title("RECOMMENDED JOBS PREDICTION")
     st.markdown("### This page predicts the job Title of the alumni based on their current Education Major, Degree, Industry and Location.")
     st.divider()
 
-    # # Data preprocessing
-    # # Handle missing values by filling them with 'Unknown' for categorical columns
-    # categorical_columns = ['Education Degree', 'Education Major', 'Location City', 'Location State', 'Location Country', 'Company Industry Name']
-    # df[categorical_columns] = df[categorical_columns].fillna('Unknown')
-
-    # # Select features and target variable
-    # features = ['Education Degree', 'Education Major', 'Location City', 'Location State', 'Location Country']
-    # target = 'Company Industry Name'
-
-    # # Encode categorical variables
-    # label_encoders = {}
-    # for feature in features:
-    #     label_encoders[feature] = LabelEncoder()
-    #     df[feature] = label_encoders[feature].fit_transform(df[feature])
-
-    # # Split data into training and testing sets
-    # X = df[features]
-    # y = df[target]
-    # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-
     # Assuming you have already filled NaN values in categorical columns
-    categorical_columns = ['Education Degree', 'Education Major', 'Location City', 'Location State', 'Location Country', 'Company Industry Name', 'Employment Title']
+    categorical_columns = ['Education Degree', 'Education Subject', 'Location City', 'Location State', 'Location Country', 'Company Industry Name', 'Employment Title']
     df[categorical_columns] = df[categorical_columns].fillna('Unknown')
 
     # Select features and target variable
-    features = ['Education Degree', 'Education Major', 'Company Industry Name',   'Location Country', 'Location State', 'Location City',]
+    features = ['Education Degree', 'Education Subject', 'Company Industry Name',   'Location Country', 'Location State', 'Location City',]
     target = 'Employment Title'
 
     # Concatenate text features into a single column for each row
@@ -61,25 +36,6 @@ def main():
     # Use TfidfVectorizer to convert the text features into numerical format
     vectorizer = TfidfVectorizer(stop_words='english')
     tfidf_matrix = vectorizer.fit_transform(df['text_features'])
-
-    # # Split data into training and testing sets
-    # y = df[target]
-    # X_train_tfidf, X_test_tfidf, y_train, y_test = train_test_split(X_tfidf, y, test_size=0.2, random_state=42)
-
-
-    # # Choose and train a classification model (Random Forest in this example)
-    # clf = RandomForestClassifier(n_estimators=100, random_state=42)
-    # clf.fit(X_train_tfidf, y_train)
-
-    # Make predictions on the testing data
-    # y_pred = clf.predict(X_test_tfidf)
-
-    # Evaluate the model's performance
-    # classification_rep = classification_report(y_test, y_pred)
-    # print('Classification Report:\n', classification_rep)
-
-
-
 
 
     ################ Education Degree ################
@@ -95,28 +51,10 @@ def main():
     ################ Education Major ################
     st.markdown("<h2 style='text-align: center;'> Education Major </h2>", unsafe_allow_html=True)
     st.write("### Education Major")
-    education_major_options = ['BBA', 'Human Resources Management', 'MBA',
-       'Business Administration and Management, General',
-       'Business, Management, Marketing, and Related Support Services',
-       'Business Psychology', 'Business Administration Marketing',
-       'International Business, Sociology, Philosophy',
-       'International Business', 'Business and Environmental Managment',
-       'Environmental and Business Management',
-       'Marketing and Management', 'Industrial Relations',
-       'Marketing and International Business',
-       'Business Economics and Marketing', 'Strategic Management',
-       'Marketing, Public Relations',
-       'Information Technology and International Business',
-       'Business Economics with Marketing and Psychology',
-       'Business Management', 'Human Resource Management',
-       'Graduate Certificate',
-       'Accounting, Finance, & International Business',
-       'International Business and Management',
-       'Business/Commerce, General', 'Marketing & Management',
-       'Environment and Business',
-       'Business Administration and Management',
-       'Doctor of Business Administration', 'International Busienss',
-       'Entrepreneurship/Entrepreneurial Studies']
+    education_major_options = ['Business', 'Business Psychology', 'Business Administration',
+                               'Icon Business Bootcamp','International Business',
+                               'Information Technology and Business', 'Media Arts/Business']
+
     
     education_major = st.selectbox("Select an option:", education_major_options)
 
@@ -213,24 +151,6 @@ def main():
 
 
 
-    # # Example: Predict the Company Type for a single data point
-    # single_data_point = {
-    #     'Education Degree': education_degree,
-    #     'Education Major': education_major,
-    #     'Location City': location_city,
-    #     'Location State': location_state,
-    #     'Location Country': location_country,
-    # }
-    # single_data_df = pd.DataFrame([single_data_point])
-    # for feature in features:
-    #     single_data_df[feature] = label_encoders[feature].transform(single_data_df[feature])
-
-    # predicted_industry = clf.predict(single_data_df[features])
-    # st.markdown("<h2 style='text-align: center;'> Predicted Industry </h2>", unsafe_allow_html=True)
-    # st.markdown(f"<h3 style='text-align: center;'> {predicted_industry[0]} </h3>", unsafe_allow_html=True)
-    # # st.write(f"Predicted Industry: {predicted_industry[0]}")
-
-
     # Example: Predict the Company Type for a single data point
     single_data_point = {
         'Education Degree': education_degree,
@@ -258,29 +178,14 @@ def main():
     similar_jobs = list(enumerate(cosine_sim[0]))
     sorted_jobs = sorted(similar_jobs, key=lambda x: x[1], reverse=True)
 
-    # # Predict the Company Type for the single data point
-    # predicted_job_title = clf.predict(single_data_tfidf)
-
     # Display the top recommended jobs (you can adjust the number of recommendations)
     st.markdown("<h1 style='text-align: center;'> Recommended Jobs </h1>", unsafe_allow_html=True)
     top_recommendations = sorted_jobs[:5]  # Here, we recommend the top 5 jobs
     for job_idx, similarity_score in top_recommendations:
-        # job_title = df["Employment Title"][job_idx]
-        # company = df["Employment Company Name"][job_idx]
-        
-        # st.markdown(f"<h3 style='text-align: center;'> {job_title} </h3>", unsafe_allow_html=True)
         st.write(f'Job Title: {df["Employment Title"][job_idx]}')
         st.write(f'Company: {df["Employment Company Name"][job_idx]}')
         st.write(f'Similarity Score: {similarity_score:.2f}')
         st.write('-' * 40)
-        # print(f'Job Title: {df["Employment Title"][job_idx]}')
-        # print(f'Company: {df["Employment Company Name"][job_idx]}')
-        # print(f'Similarity Score: {similarity_score:.2f}')
-        # print('-' * 40)
-
-    # Display the prediction
-    # st.markdown("<h2 style='text-align: center;'> Predicted Job Title </h2>", unsafe_allow_html=True)
-    # st.markdown(f"<h3 style='text-align: center;'> {predicted_job_title[0]} </h3>", unsafe_allow_html=True)
 
 
 

@@ -15,39 +15,16 @@ st.set_page_config(page_title="EDUCATION DEGREE AND MAJOR PREDICTION", page_icon
 
 def main():
     
-    url = "https://raw.githubusercontent.com/rafsunsheikh/alumni_employability/master/datasets/alumni_dataset_business.csv"
-    df = pd.read_csv(url)
-
-    # Filter rows where 'Education Subject' column is 'Business'
-    df = df[df['Education Subject'] == 'Business']
+    df = pd.read_csv('../datasets/business_dataset.csv')
 
     st.title("EDUCATION DEGREE AND MAJOR PREDICTION")
     st.markdown("### This page predicts the Education Degree and Major of the alumni based on their Desired Job TItle, Company, Industry and Location.")
     st.divider()
 
-    # # Data preprocessing
-    # # Handle missing values by filling them with 'Unknown' for categorical columns
-    # categorical_columns = ['Education Degree', 'Education Major', 'Location City', 'Location State', 'Location Country', 'Company Industry Name']
-    # df[categorical_columns] = df[categorical_columns].fillna('Unknown')
-
-    # # Select features and target variable
-    # features = ['Education Degree', 'Education Major', 'Location City', 'Location State', 'Location Country']
-    # target = 'Company Industry Name'
-
-    # # Encode categorical variables
-    # label_encoders = {}
-    # for feature in features:
-    #     label_encoders[feature] = LabelEncoder()
-    #     df[feature] = label_encoders[feature].fit_transform(df[feature])
-
-    # # Split data into training and testing sets
-    # X = df[features]
-    # y = df[target]
-    # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 
     # Assuming you have already filled NaN values in categorical columns
-    categorical_columns = ['Employment Title', 'Employment Company Name', 'Company Industry Name','Company Details Size', 'Company Type', 'Location City', 'Location State', 'Location Country', 'Education Major', 'Education Degree']
+    categorical_columns = ['Employment Title', 'Employment Company Name', 'Company Industry Name','Company Details Size', 'Company Type', 'Location City', 'Location State', 'Location Country', 'Education Subject', 'Education Degree']
     df[categorical_columns] = df[categorical_columns].fillna('Unknown')
 
    ############################# Classifier for Education Degree ##################################
@@ -75,16 +52,12 @@ def main():
     # Make predictions on the testing data
     y_pred_degree = clf_degree.predict(X_test_degree_tfidf)
 
-    # Evaluate the model's performance
-    # classification_rep = classification_report(y_test, y_pred)
-    # print('Classification Report:\n', classification_rep)
-
 
        ############################# Classifier for Education Major ##################################
 
     # Select features and target variable
     features_for_major = ['Employment Title', 'Employment Company Name', 'Company Industry Name','Company Details Size', 'Company Type', 'Location Country', 'Location State', 'Location City',]
-    target_for_major = 'Education Major'
+    target_for_major = 'Education Subject'
 
     # Concatenate text features into a single column for each row
     df['text_features_major'] = df[features_for_major].apply(lambda row: ' '.join(row.values.astype(str)), axis=1)
@@ -343,24 +316,6 @@ def main():
     st.write("You selected:", location_city)
     st.divider()
 
-
-
-    # # Example: Predict the Company Type for a single data point
-    # single_data_point = {
-    #     'Education Degree': education_degree,
-    #     'Education Major': education_major,
-    #     'Location City': location_city,
-    #     'Location State': location_state,
-    #     'Location Country': location_country,
-    # }
-    # single_data_df = pd.DataFrame([single_data_point])
-    # for feature in features:
-    #     single_data_df[feature] = label_encoders[feature].transform(single_data_df[feature])
-
-    # predicted_industry = clf.predict(single_data_df[features])
-    # st.markdown("<h2 style='text-align: center;'> Predicted Industry </h2>", unsafe_allow_html=True)
-    # st.markdown(f"<h3 style='text-align: center;'> {predicted_industry[0]} </h3>", unsafe_allow_html=True)
-    # # st.write(f"Predicted Industry: {predicted_industry[0]}")
 
 
     # Example: Predict the Company Type for a single data point

@@ -7,6 +7,5 @@ st.set_page_config(
 
 st.write("# Alumni Employability (Business) Dashboard!")
 
-# st.sidebar.success("Select a demo above.")
 
 st.write("#### Welcome to our Alumni Employability Hub, where success stories come to life. Discover the diverse and impressive careers our business graduates are building.")
