@@ -19,7 +19,7 @@ def main():
     df = pd.read_csv('../datasets/business_dataset.csv')
 
     st.title("RECOMMENDED JOBS PREDICTION")
-    st.markdown("### This page predicts the job Title of the alumni based on their current Education Major, Degree, Industry and Location.")
+    st.markdown("### This page predicts the job Title of the alumni based on their current Education Subject, Degree, Industry and Location.")
     st.divider()
 
     # Assuming you have already filled NaN values in categorical columns
@@ -48,18 +48,18 @@ def main():
     st.write("You selected:", education_degree)
     st.divider()
 
-    ################ Education Major ################
-    st.markdown("<h2 style='text-align: center;'> Education Major </h2>", unsafe_allow_html=True)
-    st.write("### Education Major")
-    education_major_options = ['Business', 'Business Psychology', 'Business Administration',
+    ################ Education Subject ################
+    st.markdown("<h2 style='text-align: center;'> Education Subject </h2>", unsafe_allow_html=True)
+    st.write("### Education Subject")
+    education_subject_options = ['Business', 'Business Psychology', 'Business Administration',
                                'Icon Business Bootcamp','International Business',
                                'Information Technology and Business', 'Media Arts/Business']
 
     
-    education_major = st.selectbox("Select an option:", education_major_options)
+    education_subject = st.selectbox("Select an option:", education_subject_options)
 
     # Display the user input and selected option
-    st.write("You selected:", education_major)
+    st.write("You selected:", education_subject)
     st.divider()
 
     ################ Job Industry ################
@@ -154,7 +154,7 @@ def main():
     # Example: Predict the Company Type for a single data point
     single_data_point = {
         'Education Degree': education_degree,
-        'Education Major': education_major,
+        'Education Subject': education_subject,
         'Company Industry Name': indusrty,
         'Location Country': location_country,
         'Location State': location_state,

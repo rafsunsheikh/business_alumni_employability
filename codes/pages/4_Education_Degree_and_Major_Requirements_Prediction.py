@@ -11,14 +11,14 @@ import streamlit as st
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
 
-st.set_page_config(page_title="EDUCATION DEGREE AND MAJOR PREDICTION", page_icon="📈", layout="wide")
+st.set_page_config(page_title="EDUCATION DEGREE AND SUBJECT PREDICTION", page_icon="📈", layout="wide")
 
 def main():
     
     df = pd.read_csv('../datasets/business_dataset.csv')
 
-    st.title("EDUCATION DEGREE AND MAJOR PREDICTION")
-    st.markdown("### This page predicts the Education Degree and Major of the alumni based on their Desired Job TItle, Company, Industry and Location.")
+    st.title("EDUCATION DEGREE AND SUBJECT PREDICTION")
+    st.markdown("### This page predicts the Education Degree and Subject of the alumni based on their Desired Job TItle, Company, Industry and Location.")
     st.divider()
 
 
@@ -53,30 +53,30 @@ def main():
     y_pred_degree = clf_degree.predict(X_test_degree_tfidf)
 
 
-       ############################# Classifier for Education Major ##################################
+       ############################# Classifier for Education Subject ##################################
 
     # Select features and target variable
-    features_for_major = ['Employment Title', 'Employment Company Name', 'Company Industry Name','Company Details Size', 'Company Type', 'Location Country', 'Location State', 'Location City',]
-    target_for_major = 'Education Subject'
+    features_for_subject = ['Employment Title', 'Employment Company Name', 'Company Industry Name','Company Details Size', 'Company Type', 'Location Country', 'Location State', 'Location City',]
+    target_for_subject = 'Education Subject'
 
     # Concatenate text features into a single column for each row
-    df['text_features_major'] = df[features_for_major].apply(lambda row: ' '.join(row.values.astype(str)), axis=1)
+    df['text_features_subject'] = df[features_for_subject].apply(lambda row: ' '.join(row.values.astype(str)), axis=1)
 
     # Use TfidfVectorizer to convert the text features into numerical format
     vectorizer = TfidfVectorizer()
-    X_tfidf_major = vectorizer.fit_transform(df['text_features_major'])
+    X_tfidf_subject = vectorizer.fit_transform(df['text_features_subject'])
 
     # Split data into training and testing sets
-    y_major = df[target_for_major]
-    X_train_major_tfidf, X_test_major_tfidf, y_train_major, y_test_major = train_test_split(X_tfidf_major, y_major, test_size=0.2, random_state=42)
+    y_subject = df[target_for_subject]
+    X_train_subject_tfidf, X_test_subject_tfidf, y_train_subject, y_test_subject = train_test_split(X_tfidf_subject, y_subject, test_size=0.2, random_state=42)
 
 
     # Choose and train a classification model (Random Forest in this example)
-    clf_major = RandomForestClassifier(n_estimators=100, random_state=42)
-    clf_major.fit(X_train_major_tfidf, y_train_major)
+    clf_subject = RandomForestClassifier(n_estimators=100, random_state=42)
+    clf_subject.fit(X_train_subject_tfidf, y_train_subject)
 
     # Make predictions on the testing data
-    y_pred_major = clf_major.predict(X_test_major_tfidf)
+    y_pred_subject = clf_subject.predict(X_test_subject_tfidf)
 
 
 
@@ -348,22 +348,22 @@ def main():
     st.markdown(f"<h3 style='text-align: center;'> {predicted_education_degree[0]} </h3>", unsafe_allow_html=True)
 
 
-################### Classification Education Major ####################################
+################### Classification Education Subject ####################################
     # Create a DataFrame for the single data point
-    single_data_df_major = pd.DataFrame([single_data_point])
+    single_data_df_subject = pd.DataFrame([single_data_point])
 
     # Concatenate text features into a single column for the single data point
-    single_data_df_major['text_features_major'] = single_data_df_major[features_for_major].apply(lambda row: ' '.join(row.values.astype(str)), axis=1)
+    single_data_df_subject['text_features_subject'] = single_data_df_subject[features_for_subject].apply(lambda row: ' '.join(row.values.astype(str)), axis=1)
 
     # Use TfidfVectorizer to transform the text features of the single data point
-    single_data_tfidf_major = vectorizer.transform(single_data_df_major['text_features_major'])
+    single_data_tfidf_subject = vectorizer.transform(single_data_df_subject['text_features_subject'])
 
     # Predict the Company Type for the single data point
-    predicted_education_major = clf_major.predict(single_data_tfidf_major)
+    predicted_education_subject = clf_subject.predict(single_data_tfidf_subject)
 
     # Display the prediction
-    st.markdown("<h2 style='text-align: center;'> Predicted Education Major </h2>", unsafe_allow_html=True)
-    st.markdown(f"<h3 style='text-align: center;'> {predicted_education_major[0]} </h3>", unsafe_allow_html=True)
+    st.markdown("<h2 style='text-align: center;'> Predicted Education Subject </h2>", unsafe_allow_html=True)
+    st.markdown(f"<h3 style='text-align: center;'> {predicted_education_subject[0]} </h3>", unsafe_allow_html=True)
 
 
 
