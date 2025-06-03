@@ -15,7 +15,7 @@ st.set_page_config(page_title="JOB INDUSTRY PREDICTION", page_icon="📈", layou
 
 def main():
     
-    df = pd.read_csv('../datasets/business_dataset.csv')
+    df = pd.read_csv('https://raw.githubusercontent.com/rafsunsheikh/business_alumni_employability/refs/heads/master/datasets/business_dataset.csv')
 
 
     st.title("JOB INDUSTRY PREDICTION")
