@@ -15,7 +15,7 @@ st.set_page_config(page_title="EDUCATION DEGREE AND SUBJECT PREDICTION", page_ic
 
 def main():
     
-    df = pd.read_csv('../datasets/business_dataset.csv')
+    df = pd.read_csv('https://raw.githubusercontent.com/rafsunsheikh/business_alumni_employability/refs/heads/master/datasets/business_dataset.csv')
 
     st.title("EDUCATION DEGREE AND SUBJECT PREDICTION")
     st.markdown("### This page predicts the Education Degree and Subject of the alumni based on their Desired Job TItle, Company, Industry and Location.")
