@@ -15,7 +15,7 @@ st.set_page_config(page_title="JOB TITLE PREDICTION", page_icon="📈", layout="
 
 def main():
     
-    df = pd.read_csv('../datasets/business_dataset.csv')
+    df = pd.read_csv('https://raw.githubusercontent.com/rafsunsheikh/business_alumni_employability/refs/heads/master/datasets/business_dataset.csv')
 
     st.title("JOB TITLE PREDICTION")
     st.markdown("### This page predicts the job Title of the alumni based on their current Education Subject, Degree, Industry and Location.")
